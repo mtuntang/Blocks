@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
 
     public void LookAt(Vector3 lookPoint)
     {
-        //Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
-        // heightCorrectedPoint ensures the player doesn't lean, but the leaning effect looks good though
-        transform.LookAt(lookPoint);
+        Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
+        // heightCorrectedPoint ensures the player doesn't lean, the leaning effect looks good but makes the player flip
+        transform.LookAt(heightCorrectedPoint);
     }
 }

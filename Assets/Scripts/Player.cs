@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float speed = 5.0f;
     public Vector3 moveInput;
     public Camera camera;
+    public Gun defaultGun;
     private PlayerController playerController;
 
     void Start()
