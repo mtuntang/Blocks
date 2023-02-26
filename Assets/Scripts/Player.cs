@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(GunController))]
 public class Player : MonoBehaviour
 {
     public float speed = 5.0f;
     public Vector3 moveInput;
     public Camera camera;
     public Gun defaultGun;
+    public GunController gunController;
     private PlayerController playerController;
 
     void Start()
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
         moveInput = new Vector3();
         camera = Camera.main;
         playerController = GetComponent<PlayerController>();
+        gunController= GetComponent<GunController>();
     }
 
     void FixedUpdate()
@@ -36,6 +39,10 @@ public class Player : MonoBehaviour
             playerController.LookAt(point);
         }
 
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            gunController.Shoot();
+        }
     }
 
    
