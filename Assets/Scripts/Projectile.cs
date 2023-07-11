@@ -5,7 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 10.0f;
-    //public LayerMask collisionMask;
+    public LayerMask collisionMask;
+    public float damage = 1;
 
     void Update()
     {
@@ -19,27 +20,52 @@ public class Projectile : MonoBehaviour
         this.speed = speed;
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        GameObject.Destroy(gameObject);
-    }
+    /* Another technique is to use raycasting to see if a ray + move distance will hit the enemy's collision layer. --> alternative to Continuous Dynamic
+     * 
+     * public void CheckCollisions(float moveDistance)
+     {
+         Ray ray = new Ray(transform.position, transform.forward);
+         RaycastHit hit;
 
-   /* Another technique is to use raycasting to see if a ray + move distance will hit the enemy's collision layer. --> alternative to Continuous Dynamic
-    * 
-    * public void CheckCollisions(float moveDistance)
-    {
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+         if (Physics.Raycast(ray, out hit, moveDistance, collisionMask, QueryTriggerInteraction.Collide)) 
+         {
+             OnHitObject(hit);
+         }
+     }
 
-        if (Physics.Raycast(ray, out hit, moveDistance, collisionMask, QueryTriggerInteraction.Collide)) 
+     public void OnHitObject(RaycastHit hit)
+     {
+         Debug.Log("Hit an enemy: " + hit.collider.gameObject.name);
+         GameObject.Destroy(gameObject);
+     }*/
+
+    /*public void OnHitObject(RaycastHit hit)
+    {
+        IDamageable damageableObject = hit.collider.GetComponent<IDamageable>();
+        if (damageableObject != null) 
         {
-            OnHitObject(hit);
+            damageableObject.TakeHit(damage, hit);
         }
-    }
-
-    public void OnHitObject(RaycastHit hit)
-    {
-        Debug.Log("Hit an enemy: " + hit.collider.gameObject.name);
         GameObject.Destroy(gameObject);
     }*/
+
+    public void OnTriggerEnter(Collider other)
+    {
+        IDamageable damageableObject = other.GetComponent<IDamageable>();
+        if (damageableObject != null && other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            return;
+        }
+
+        if (damageableObject != null && other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Debug.Log("Hit an enemy: " + other.gameObject.name);
+            damageableObject.TakeHit(damage, other);
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            GameObject.Destroy(gameObject);
+        }
+    }
 }

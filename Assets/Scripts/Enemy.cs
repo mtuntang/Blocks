@@ -1,15 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+[RequireComponent(typeof(NavMeshAgent))]
+public class Enemy : LivingEntity
 {
     public NavMeshAgent pathFinder;
     private Transform target; 
     
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         pathFinder= GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(UpdatePath());
@@ -24,10 +25,13 @@ public class Enemy : MonoBehaviour
     private IEnumerator UpdatePath()
     {
         float refreshRate = 0.25f;
-        while (target != null) 
+        while (target != null)
         { 
-            Vector3 targetPos = target.position;
-            pathFinder.SetDestination(targetPos);
+            Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
+            if (alive)
+            {
+                pathFinder.SetDestination(targetPosition);
+            }
             yield return new WaitForSeconds(refreshRate);
         }
     }

@@ -342,9 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5894a015569dd4eb4b91d99b3d8bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  startingHealth: 10
+  speed: 6.5
   moveInput: {x: 0, y: 0, z: 0}
-  camera: {fileID: 0}
+  viewCamera: {fileID: 0}
   defaultGun: {fileID: 229161321759102198, guid: 55361dde7cd440c45862345ef6bfd510, type: 3}
   gunController: {fileID: 0}
 --- !u!114 &5165016423273198073

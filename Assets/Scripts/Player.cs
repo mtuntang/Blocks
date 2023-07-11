@@ -4,30 +4,31 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(GunController))]
-public class Player : MonoBehaviour
+public class Player : LivingEntity
 {
     public float speed = 5.0f;
     public Vector3 moveInput;
-    public Camera camera;
+    public Camera viewCamera;
     public Gun defaultGun;
     public GunController gunController;
     private PlayerController playerController;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         moveInput = new Vector3();
-        camera = Camera.main;
+        viewCamera = Camera.main;
         playerController = GetComponent<PlayerController>();
         gunController= GetComponent<GunController>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         moveInput.Set(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         moveInput = moveInput.normalized * speed * Time.deltaTime;
         playerController.Move(moveInput);
 
-        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         float rayDistance;
 
