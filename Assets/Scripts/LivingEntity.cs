@@ -8,13 +8,20 @@ public class LivingEntity : MonoBehaviour, IDamageable
     protected float health;
     protected bool alive;
 
+    public event System.Action OnDeath;
+
     protected virtual void Start()
     {
         health = startingHealth;
         alive = true;
     }
 
-    public void TakeHit(float damage, Collider hit)
+    public void TakeHit(float damage, Collision hit)
+    {
+        TakeDamage(damage);
+    }
+
+    public void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0 && alive)
@@ -27,6 +34,10 @@ public class LivingEntity : MonoBehaviour, IDamageable
     {
         alive = false;
         health = 0;
+        if (OnDeath!= null)
+        {
+            OnDeath();
+        }
         GameObject.Destroy(gameObject);
     }
 

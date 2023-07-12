@@ -7,6 +7,12 @@ public class Projectile : MonoBehaviour
     public float speed = 10.0f;
     public LayerMask collisionMask;
     public float damage = 1;
+    private float lifeTime = 3;
+
+    void Start()
+    {
+        Destroy(gameObject, lifeTime);    
+    }
 
     void Update()
     {
@@ -49,9 +55,9 @@ public class Projectile : MonoBehaviour
         GameObject.Destroy(gameObject);
     }*/
 
-    public void OnTriggerEnter(Collider other)
+    public void OnCollisionEnter(Collision other)
     {
-        IDamageable damageableObject = other.GetComponent<IDamageable>();
+        IDamageable damageableObject = other.collider.GetComponent<IDamageable>();
         if (damageableObject != null && other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             return;
