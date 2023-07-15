@@ -14,5 +14,3 @@ To view development progress, feel free to look into the "Documentation" folder 
 
 2. **Map generation:**
    ![Map Generation Video](https://github.com/mtuntang/Blocks/assets/51338218/49b850f9-1aba-40ad-9793-b42f119ffc41)
-
-## How to run the game: 
