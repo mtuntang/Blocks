@@ -32,7 +32,7 @@ public class MapGenerator : MonoBehaviour
     // TODO: Split up generate map into several helper methods, this is painful to read
     public void GenerateMap()
     {
-
+        // Generate tiles mao
         tileCoordinates = new List<Coordinate>();
         for (int x = 0; x < mapSize.x; x++)
         {
@@ -66,6 +66,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        // Generate obstacle tiles
         bool[,] obstacleMap = new bool[(int)mapSize.x, (int)mapSize.y];
 
         int obstacleCount = (int)(mapSize.x * mapSize.y * obstaclePercent);
