@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using Unity.VisualScripting;
 
 public class MapGenerator : MonoBehaviour
 {
-
     public Transform tilePrefab;
     public Transform obstaclePrefab;
     public Transform navmeshFloor;
@@ -17,11 +18,10 @@ public class MapGenerator : MonoBehaviour
     public float obstaclePercent;
 
     public float tileSize;
+    public int seed = 10;
 
     List<Coordinate> tileCoordinates;
     Queue<Coordinate> shuffledTileCoordinates;
-
-    public int seed = 10;
     Coordinate mapCentre;
 
     void Start()
@@ -29,10 +29,16 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
     }
 
-    // TODO: Split up generate map into several helper methods, this is painful to read
     public void GenerateMap()
     {
-        // Generate tiles mao
+        Transform mapHolder = InitializeMapData();
+        GenerateMapTiles(mapHolder);
+        bool[,] obstacleMap = GenerateObstacleTiles(mapHolder);
+        GenerateMapBoundaries(mapHolder, obstacleMap);
+    }
+
+    Transform InitializeMapData()
+    {
         tileCoordinates = new List<Coordinate>();
         for (int x = 0; x < mapSize.x; x++)
         {
@@ -53,20 +59,25 @@ public class MapGenerator : MonoBehaviour
         Transform mapHolder = new GameObject(holderName).transform;
         mapHolder.parent = transform;
 
+        return mapHolder;
+    }
+
+    void GenerateMapTiles(Transform mapHolder)
+    {
         for (int x = 0; x < mapSize.x; x++)
         {
             for (int y = 0; y < mapSize.y; y++)
             {
-                // Think Lorenz force sign for vectors, in vector3 z axis is the y of z
-                // Generate each tile with its edge at the point, need to shift
                 Vector3 tilePosition = CoordToPosition(x, y);
                 Transform newTile = Instantiate(tilePrefab, tilePosition, Quaternion.Euler(Vector3.right * 90)) as Transform;
                 newTile.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
                 newTile.parent = mapHolder;
             }
         }
+    }
 
-        // Generate obstacle tiles
+    bool[,] GenerateObstacleTiles(Transform mapHolder)
+    {
         bool[,] obstacleMap = new bool[(int)mapSize.x, (int)mapSize.y];
 
         int obstacleCount = (int)(mapSize.x * mapSize.y * obstaclePercent);
@@ -92,7 +103,11 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        // Generate map boundaries:
+        return obstacleMap;
+    }
+
+    void GenerateMapBoundaries(Transform mapHolder, bool[,] obstacleMap)
+    {
         Transform maskLeft = Instantiate(navmeshMaskPrefab, Vector3.left * (mapSize.x + maxMapSize.x) / 4 * tileSize, Quaternion.identity) as Transform;
         maskLeft.parent = mapHolder;
         maskLeft.localScale = new Vector3((maxMapSize.x - mapSize.x) / 2, 1, mapSize.y) * tileSize;
@@ -110,7 +125,6 @@ public class MapGenerator : MonoBehaviour
         maskBottom.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - mapSize.y) / 2) * tileSize;
 
         navmeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * tileSize;
-
     }
 
     /* Floodfill, start from mapCenter since there won't be an obstacle there. Search all tiles in an expanding outwards radius (BFS). 
@@ -125,7 +139,7 @@ public class MapGenerator : MonoBehaviour
         int height = obstacleMap.GetLength(1);
         bool[,] visitedTiles = new bool[width, height];
         Queue<Coordinate> queue = new Queue<Coordinate>();
-        Coordinate mapCentre = new Coordinate(width / 2, height / 2); // Assuming mapCentre is initialized correctly
+        Coordinate mapCentre = new Coordinate(width / 2, height / 2);
 
         queue.Enqueue(mapCentre);
         visitedTiles[mapCentre.x, mapCentre.y] = true;
@@ -136,7 +150,6 @@ public class MapGenerator : MonoBehaviour
         {
             Coordinate tile = queue.Dequeue();
 
-            // Define the relative positions of neighboring tiles (left, up, right, down).
             int[] dx = { -1, 0, 1, 0 };
             int[] dy = { 0, -1, 0, 1 };
 
@@ -173,6 +186,7 @@ public class MapGenerator : MonoBehaviour
         return randomCoord;
     }
 
+    [System.Serializable]
     public struct Coordinate
     {
         public int x;
@@ -193,6 +207,5 @@ public class MapGenerator : MonoBehaviour
         {
             return !(c1 == c2);
         }
-
     }
 }
