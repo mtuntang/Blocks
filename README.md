@@ -10,7 +10,7 @@ To view development progress, feel free to look into the "Documentation" folder 
 ## Most recent substantial update:
 
 1. **Map array, obstacle height and colour:**
-![Map array, obstacle generation Video]([https://github.com/mtuntang/Blocks/assets/51338218/375f4b93-af0f-4582-b024-02eb4e0d53e2])
+![Map array, obstacle generation Video](https://github.com/mtuntang/Blocks/assets/51338218/b4ada98b-7df3-4063-bc70-84552527a40e)
 
 2. **AI spawn, movement, and attack:**
    ![AI Spawn, Movement, and Attack Video](https://github.com/mtuntang/Blocks/assets/51338218/52aaf959-03b1-48dd-899a-5eba7e0de00f)
