@@ -4,6 +4,7 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 using Unity.VisualScripting;
 using System.Drawing;
 using System.Net.NetworkInformation;
+using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -197,6 +198,15 @@ public class MapGenerator : MonoBehaviour
     Vector3 CoordToPosition(int x, int y)
     {
         return new Vector3(-currentMap.mapSize.x / 2f + 0.5f + x, 0, -currentMap.mapSize.y / 2f + 0.5f + y) * tileSize;
+    }
+
+    public Transform GetTileFromPosition(Vector3 position)
+    {
+        int x = Mathf.RoundToInt(position.x / tileSize + (currentMap.mapSize.x - 1) / 2f);
+        int y = Mathf.RoundToInt(position.z / tileSize + (currentMap.mapSize.y - 1) / 2f);
+        x = Mathf.Clamp(x, 0, tileLocations.GetLength(0) - 1);
+        y = Mathf.Clamp(y, 0, tileLocations.GetLength(1) - 1);
+        return tileLocations[x, y];
     }
 
     public Coordinate GetRandomCoord()
