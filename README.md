@@ -1,7 +1,7 @@
 # Blocks
 Unity 3D Top Down Shooter
 
-## Game Title: Blocks (highly consider "SUS Shooting" because of amogus memes)
+## Game Title: Blocks (highly considering "SUS Shooting" because of amogus memes)
 
 Inspiration: Unity 3D Top Down Shooter
 
