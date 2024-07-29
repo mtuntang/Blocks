@@ -20,7 +20,8 @@ To view development progress, feel free to look into the "Documentation" folder 
 
 4. **Map generation:**
    ![Map Generation Video](https://github.com/mtuntang/Blocks/assets/51338218/49b850f9-1aba-40ad-9793-b42f119ffc41)
-   
+
 5. **Putting it all together:**
-![Prototype](https://github.com/user-attachments/assets/950f9618-b33f-41e8-91fe-430e5100bf1c)
+   ![Prototype Video]([https://github.com/mtuntang/Blocks/assets/51338218/49b850f9-1aba-40ad-9793-b42f119ffc41](https://github.com/user-attachments/assets/950f9618-b33f-41e8-91fe-430e5100bf1c))
+   
    
